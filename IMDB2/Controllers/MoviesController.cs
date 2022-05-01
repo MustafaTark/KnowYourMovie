@@ -11,6 +11,7 @@ using System.Web.Mvc;
 //using System.Web.Services;
 using System.Net;
 using System.IO;
+using IMDB2.Data;
 
 namespace IMDB2.Controllers
 {
@@ -41,144 +42,41 @@ namespace IMDB2.Controllers
         
         public ActionResult Create()
         {
+            int[] SelectedActorId = new int[] { 1 };
+            ViewBag.SelectedActorId = SelectedActorId; // setting it as 0 as index automatically starts from 1.
+            List<SelectListItem> actorList = new List<SelectListItem>();
+            foreach (var actor in _context.Actors)
+            {
+                actorList.Add(new SelectListItem { Value = actor.Id.ToString(), Text = actor.FirstName+""+actor.LastName });
+            }
+            ViewBag.ActorList = actorList;
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Route("Movies/Create")]
+        
         public ActionResult Create(Movie movie)
         {
             
             if (ModelState.IsValid)
             {
-
-                //movieVm.Movie.Actors.Add(movieVm.Actors);
-                //movieVm.Movie.Director.Add(movieVm.Director);
-                movie.DirectorId = movie.Director.Id;
                 HttpPostedFileBase Moviefile = Request.Files["ImageMovie"];
-                HttpPostedFileBase Directorfile = Request.Files["ImageDirector"];
                 if (Moviefile != null)
                 {
-                    byte[] image = UploadImageInDataBase(Moviefile);
+                    byte[] image = Upload.UploadImageInDataBase(Moviefile);
                     movie.Image = image;
+                    string ImageName = Path.GetFileName(Moviefile.FileName);
+                    movie.Img = ImageName;
+                    string physicalPath = Server.MapPath("~/Images" + ImageName);
+                    Moviefile.SaveAs(physicalPath);
                 }
                
-                //if (file != null)
-                //{
-
-                //    string ImageName = Path.GetFileName(file.FileName);
-                //    string physicalPath = Server.MapPath("~/Images" + ImageName);
-
-                //    // save image in folder
-                //    file.SaveAs(physicalPath);
-
-                //    //save new record in database
-
-                //    movie.Image = ImageName;
-
-
-                //}
-
-
                 _context.Movies.Add(movie);
-                
-                _context.Directors.Add(movie.Director);
-                
-                
                 _context.SaveChanges();
-                
-                
                 return RedirectToAction(nameof(AddDirector));
             }
            
             return View(movie);
-        }
-        [Authorize(Roles = "Admin")]
-        public ActionResult AddDirector()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddDirector(Director director)
-        {
-            if (ModelState.IsValid)
-            {
-                var movie=_context.Movies.Last();
-                movie.DirectorId = director.Id;
-                _context.Directors.ToList().Add(director);
-                return RedirectToAction(nameof(AddActors));
-            }
-            return View(director);
-        }
-        [Authorize(Roles = "Admin")]
-        public ActionResult UpdateDirector(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ;
-            Director director = _context.Directors.ToList().FirstOrDefault(m => m.Id == id);
-
-            if (director == null)
-            {
-                return HttpNotFound();
-            }
-            return View(director);
-        }
-
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateDirector(Director director)
-        {
-            if (ModelState.IsValid)
-            {
-              
-                Director directorInDb = _context.Directors.ToList().First(d => d.Id == director.Id);
-                directorInDb.FirstName = director.FirstName;
-               
-                directorInDb.LastName = director.LastName;
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(director);
-        }
-        [Authorize(Roles = "Admin")]
-        public ActionResult AddActors()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-       // [Route("Movies/AddActors")]
-        public ActionResult AddActors(Actor actor)
-        {
-
-            
-            if (ModelState.IsValid)
-            {
-               var movie= _context.Movies.ToList().Last();
-
-                HttpPostedFileBase file = Request.Files["ImageActor"];
-                byte[] image = UploadImageInDataBase(file);
-                actor.Image = image;
-                movie.Actors.Add(actor);
-               
-                _context.Actors.ToList().Add(actor);
-               
-                _context.SaveChanges();
-
-
-                return RedirectToAction(nameof(AddActors));
-            }
-           
-
-            return View(actor);
         }
         [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
@@ -187,8 +85,8 @@ namespace IMDB2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Movie movie = _context.Movies.ToList().FirstOrDefault(m=>m.Id==id);
-            Director director=_context.Directors.ToList().FirstOrDefault(m=>m.Id==movie.DirectorId);
+            Movie movie = _context.Movies.ToList().FirstOrDefault(m => m.Id == id);
+            Director director = _context.Directors.ToList().FirstOrDefault(m => m.Id == movie.DirectorId);
 
             if (movie == null)
             {
@@ -197,86 +95,41 @@ namespace IMDB2.Controllers
             var updateMovie = new UpdateMovieViewModel
             {
                 Movie = movie,
-                Actor=movie.Actors.FirstOrDefault(),
+                Actor = movie.Actors.FirstOrDefault(),
                 Director = director,
             };
             return View(movie);
         }
 
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Movie movie)
         {
             if (ModelState.IsValid)
             {
-                Movie movieInDb=_context.Movies.ToList().First(m=>m.Id==movie.Id);
-                movieInDb.Name=movie.Name;
-                movieInDb.Img=movie.Img;
+                Movie movieInDb = _context.Movies.ToList().First(m => m.Id == movie.Id);
+                movieInDb.Name = movie.Name;
+                //movieInDb.Img=movie.Img;
                 HttpPostedFileBase Moviefile = Request.Files["ImageMovie"];
                 if (Moviefile != null)
                 {
-                    byte[] image = UploadImageInDataBase(Moviefile);
+                    byte[] image = Upload.UploadImageInDataBase(Moviefile);
                     movieInDb.Image = image;
+                    string ImageName = Path.GetFileName(Moviefile.FileName);
+                    movieInDb.Img = ImageName;
+                    string physicalPath = Server.MapPath("~/Images" + ImageName);
+                    Moviefile.SaveAs(physicalPath);
                 }
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
         }
-        [Authorize(Roles = "Admin")]
-        public ActionResult UpdateActor(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var actor = _context.Actors.FirstOrDefault(a => a.Id == id);
-
-            if (actor == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(actor);
-        }
-
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateActor(Actor actor)
-        {
-            if (ModelState.IsValid)
-            {
-                var actorInDb = _context.Actors.ToList().First(a => a.Id == actor.Id);
-                actorInDb.FirstName=actor.FirstName;
-                actorInDb.LastName=actor.LastName;
-                actorInDb.Age=actor.Age;
-                actorInDb.Img = actor.Img;
-                HttpPostedFileBase actorfile = Request.Files["ImageActor"];
-                if (actorfile != null)
-                {
-                    byte[] image = UploadImageInDataBase(actorfile);
-                    actorInDb.Image = image;
-                }
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(actor);
-        }
-        [NonAction]
-        private byte[] UploadImageInDataBase(HttpPostedFileBase file)
-        {
-            //file.InputStream.Read(movieInDb.Image, 0, file.ContentLength);
-            var stream = file.InputStream;
-            var reader = new BinaryReader(stream);
-            byte[] imageBytes = reader.ReadBytes(file.ContentLength);
-            return imageBytes;
-        }
+       
+        
+       
+        
 
         // POST: Movies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
