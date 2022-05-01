@@ -43,7 +43,7 @@ namespace IMDB2.Controllers
         public ActionResult Create()
         {
             int[] SelectedActorId = new int[] { 1 };
-            ViewBag.SelectedActorId = SelectedActorId; // setting it as 0 as index automatically starts from 1.
+            ViewBag.SelectedActorId = SelectedActorId; 
             List<SelectListItem> actorList = new List<SelectListItem>();
             foreach (var actor in _context.Actors)
             {
@@ -73,7 +73,7 @@ namespace IMDB2.Controllers
                
                 _context.Movies.Add(movie);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(AddDirector));
+                return RedirectToAction("AddDirector","Director");
             }
            
             return View(movie);
@@ -126,10 +126,10 @@ namespace IMDB2.Controllers
             }
             return View(movie);
         }
-       
-        
-       
-        
+      
+
+
+
 
         // POST: Movies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 

@@ -19,7 +19,7 @@
         @Html.Label("Select Director", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("SelectedActorId", (IEnumerable<SelectListItem>)ViewBag.DirectorList)
-            @Html.ActionLink("Add New Actor", "Create", new { actorAdded = true })
+            @Html.ActionLink("Add New Director", "NewDirector","Director")
         </div>
 
     </div>

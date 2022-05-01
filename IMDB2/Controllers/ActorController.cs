@@ -37,7 +37,7 @@ namespace IMDB2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // [Route("Movies/AddActors")]
+      
         public ActionResult AddActors(FormCollection form)
         {
 
@@ -56,11 +56,11 @@ namespace IMDB2.Controllers
                 _context.SaveChanges();
 
 
-                return RedirectToAction(nameof(AddActors));
+                return RedirectToAction("AddActors","Actor");
             }
 
 
-            return RedirectToAction(nameof(AddActors));
+            return RedirectToAction("Index","Movies");
         }
         [Authorize(Roles = "Admin")]
         public ActionResult NewActor()
@@ -91,7 +91,7 @@ namespace IMDB2.Controllers
                     actor.Image = image;
                     string ImageName = Path.GetFileName(file.FileName);
                     actor.Img = ImageName;
-                    string physicalPath = Server.MapPath("~/Images" + ImageName);
+                    string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
                     file.SaveAs(physicalPath);
                 }
 
@@ -103,7 +103,7 @@ namespace IMDB2.Controllers
                 _context.SaveChanges();
 
 
-                return RedirectToAction(nameof(NewActor));
+                return RedirectToAction("NewActor");
             }
 
 

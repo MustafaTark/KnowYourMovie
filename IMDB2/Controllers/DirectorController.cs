@@ -37,7 +37,7 @@ namespace IMDB2.Controllers
                 var movie = _context.Movies.ToList().Last();
                 movie.DirectorId = director.Id;
                 _context.Directors.ToList().Add(director);
-                return RedirectToAction(nameof(AddDirector));
+                return RedirectToAction("AddActors","Actor");
             }
             return View(director);
         }
