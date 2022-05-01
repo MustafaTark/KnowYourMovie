@@ -198,13 +198,16 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActorController.cs" />
     <Compile Include="Controllers\Api\MoviesController.cs" />
     <Compile Include="Controllers\Api\ProfileController.cs" />
+    <Compile Include="Controllers\DirectorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Data Handleing\Upload.cs" />
     <Compile Include="Dto\ActorDto.cs" />
     <Compile Include="Dto\DirectorDto.cs" />
     <Compile Include="Dto\MovieDto.cs" />
@@ -324,11 +327,13 @@
     <Content Include="Views\Movies\EditorTemplates\Movie.cshtml" />
     <Content Include="Views\Movies\EditorTemplates\Director.cshtml" />
     <Content Include="Views\Movies\Edit.cshtml" />
-    <Content Include="Views\Movies\UpdateActor.cshtml" />
+    <Content Include="Views\Actor\UpdateActor.cshtml" />
     <Content Include="Views\Movies\Create.cshtml" />
-    <Content Include="Views\Movies\AddActors.cshtml" />
-    <Content Include="Views\Movies\AddDirector.cshtml" />
-    <Content Include="Views\Movies\UpdateDirector.cshtml" />
+    <Content Include="Views\Actor\AddActors.cshtml" />
+    <Content Include="Views\Director\AddDirector.cshtml" />
+    <Content Include="Views\Director\UpdateDirector.cshtml" />
+    <Content Include="Views\Actor\NewActor.cshtml" />
+    <Content Include="Views\Director\NewDirector.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
