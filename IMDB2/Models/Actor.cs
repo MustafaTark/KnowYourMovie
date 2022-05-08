@@ -14,14 +14,12 @@ namespace IMDB2.Models
         public int Age { get; set; }
         public string Img { get; set; }
         public byte[] Image { get; set; }
-        //public int? MovieId { get; set; }
-        //[ForeignKey("MovieId")]
-        //public Movie Movie { get; set; }
-        //[InverseProperty("Actor")] // <- Navigation property name in EntityA
+     
         public ICollection<Movie> Movies { get; set; }
-        public ICollection<UpdateMovieViewModel> NewMovies { get; set; }
+   
+        public virtual ICollection<Person> Users { get; set; }
         //public bool IsFavorite { get; set; }
-       
-        
+
+
     }
 }

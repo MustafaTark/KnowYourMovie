@@ -21,9 +21,11 @@ namespace IMDB2.Models
         public virtual ICollection<Actor> Actors { get; set; }
         public virtual ICollection<Person> Users { get; set; }
         public int? DirectorId { get; set; }
-        //[ForeignKey("DirectorId")]
+        [ForeignKey("DirectorId")]
         public Director Director { get; set; }
-        
+        public int Likes { get; set; }
+        public int Dislikes { get; set; }
+
         //public bool IsFavorite { get; set; }
     }
 }

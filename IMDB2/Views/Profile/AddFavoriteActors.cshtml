@@ -1,0 +1,57 @@
+﻿@model IMDB2.Models.Person
+@{
+    ViewBag.Title = "AddFavoriteActors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AddFavoriteMovies</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Person</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Select Favorite Actor", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SelectedActorId", (IEnumerable<SelectListItem>)ViewBag.ActorList, new { @class = "nav-link dropdown-toggle" })
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add To Favorite" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Finish", "Index", "Profile")
+</div>
+<div style="height:10px"></div>
+@if (Model.Actors.Any())
+{
+    <div>
+        <table class="table table-hover">
+
+            <tbody>
+                @foreach (var actor in Model.Actors)
+                {
+                    <tr>
+                        <th><a href="#">@actor.FirstName @actor.LastName</a></th>
+                        <td>@Html.ActionLink("Delete", "DeleteActor", "Profile", new { id = actor.Id })</td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+}
+

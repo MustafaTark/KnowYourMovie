@@ -7,7 +7,7 @@
 <h2>AddActors</h2>
 
 
-@using (Html.BeginForm("AddActors", "Movies", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddActors", "Actor", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -15,45 +15,8 @@
     <h4>Actor</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @*<div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Img, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Img, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input class="form-control" name="ImageActor" type="file" id="ImageActor">
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+   
+        
     <div class="form-group">
         @Html.Label("Select Actors", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -62,13 +25,18 @@
         </div>
 
     </div>
-    @Html.ActionLink("Add New", "NewActor", new { @class = "btn btn-success" })
+    <div style="height:20px"></div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Add" class="btn btn-success" />
+            <input type="submit" value="Add" class="btn btn-outline-success" />
         </div>
     </div>
-    @Html.ActionLink("Finish", "Index")
+    <div style="height:20px"></div>
+    @Html.ActionLink("Add New Actor", "NewActor", "Actor", new { @class = "btn btn-warning" })
+
+    <div style="height:20px"></div>
+    @Html.ActionLink("Finish", "Index", "Movies")
 </div>
 }
 

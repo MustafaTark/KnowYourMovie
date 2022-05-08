@@ -3,21 +3,23 @@
     ViewBag.Title = "IndexToAdmin";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>Admin Panel</h1>
+<div style="height:20px"></div>
+@Html.ActionLink("Create New Movie", "Create", "Movies", new {@class= "btn btn-warning" })
+<div style="height:20px"></div>
 <div class="row">
 
     @foreach (var movie in Model)
     {
-        <div class="card border-secondary mb-3" style="max-width: 15rem;">
-            <a class="list-group-item list-group-item-action" href="@Url.Content("/Movies/New/" + movie.Id )">
+        <div class="card border-secondary mb-3" style="max-width: 14rem;">
+            <a class="list-group-item list-group-item-action" href="@Url.Content("/Movies/Details/" + movie.Id )">
                 <h4>@movie.Name</h4>
                 
                 <img src="@Url.Content("~/images/" + movie.Img)" alt="Sample Image" class="d-block user-select-none" width="150" height="200" aria-label="Placeholder: Image cap" focusable="false" />
                 
             </a>
-            <i class="glyphicon glyphicon-apple" style="font-size:48px;color:red;"></i>
+            
         </div>
-        <div style="max-width: 15rem;"></div>
+        <div style="max-width: 13rem;"></div>
 
     }
 </div>

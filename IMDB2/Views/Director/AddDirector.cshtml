@@ -7,7 +7,7 @@
 <h2>AddDirector</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("AddDirector", "Director", FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
     
@@ -18,15 +18,16 @@
     <div class="form-group">
         @Html.Label("Select Director", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownList("SelectedActorId", (IEnumerable<SelectListItem>)ViewBag.DirectorList)
-            @Html.ActionLink("Add New Director", "NewDirector","Director")
+            @Html.DropDownList("SelectedActorId", (IEnumerable<SelectListItem>)ViewBag.DirectorList, new { @class = "nav-link dropdown-toggle" })
+            <div style="height:10px"></div>
+            @Html.ActionLink("Add New Director", "NewDirector", "Director", null, new { @class = "btn btn-warning" })
         </div>
 
     </div>
-
+    <div style="height:10px"></div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-success" />
+            <input type="submit" value="Create New Director" class="btn btn-warning" />
         </div>
     </div>
 </div>

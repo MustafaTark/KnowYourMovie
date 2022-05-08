@@ -1,5 +1,6 @@
 ﻿using IMDB2.Data;
 using IMDB2.Models;
+using IMDB2.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,7 @@ namespace IMDB2.Controllers
 {
     public class ActorController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public ActorController()
         {
@@ -23,13 +24,24 @@ namespace IMDB2.Controllers
         {
             _context.Dispose();
         }
+        public ActionResult Details(int id)
+        {
+            var actor=_context.Actors.FirstOrDefault(a => a.Id == id);
+            var movies=_context.Movies.Where(m=>m.Actors.FirstOrDefault(a=>a.Id == id).Id==id).ToList();
+            var actorVM = new ActorDetailsViewModel
+            {
+                Actor = actor,
+                Movies = movies,
+            };
+            return View(actorVM);
+        }
         [Authorize(Roles = "Admin")]
         public ActionResult AddActors()
         {
             List<SelectListItem> actorList = new List<SelectListItem>();
             foreach (var actor in _context.Actors)
             {
-                actorList.Add(new SelectListItem { Value = actor.Id.ToString(), Text = actor.FirstName + "" + actor.LastName });
+                actorList.Add(new SelectListItem { Value = actor.Id.ToString(), Text = actor.FirstName + " " + actor.LastName });
             }
             ViewBag.ActorList = actorList;
             return View();
@@ -107,7 +119,7 @@ namespace IMDB2.Controllers
             }
 
 
-            return RedirectToAction(nameof(AddActors));
+            return RedirectToAction("NewActor");
         }
 
         [Authorize(Roles = "Admin")]
@@ -147,13 +159,30 @@ namespace IMDB2.Controllers
                     actorInDb.Image = image;
                     string ImageName = Path.GetFileName(file.FileName);
                     actorInDb.Img = ImageName;
-                    string physicalPath = Server.MapPath("~/Images" + ImageName);
+                    string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
                     file.SaveAs(physicalPath);
                 }
                 _context.SaveChanges();
                 return RedirectToAction("Details");
             }
             return View(actor);
+        }
+        public ActionResult Delete(int? id,int movieId)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var actor = _context.Actors.ToList().FirstOrDefault(a=>a.Id== id);
+
+            var movie=_context.Movies.ToList().FirstOrDefault(m=>m.Id==movieId);
+            if (actor == null)
+            {
+                return HttpNotFound();
+            }
+            movie.Actors.Remove(actor);
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Movies", new {id=movieId});
         }
     }
 }

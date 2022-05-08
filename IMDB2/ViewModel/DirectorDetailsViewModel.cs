@@ -6,10 +6,9 @@ using System.Web;
 
 namespace IMDB2.ViewModel
 {
-    public class MovieFormViewModel
+    public class DirectorDetailsViewModel
     {
-        public Movie Movie { get; set; }
-        public Actor Actors { get; set; }
         public Director Director { get; set; }
+        public List<Movie> Movies { get; set; }
     }
 }

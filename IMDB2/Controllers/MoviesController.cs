@@ -12,12 +12,13 @@ using System.Web.Mvc;
 using System.Net;
 using System.IO;
 using IMDB2.Data;
+using IMDB2.ViewModel;
 
 namespace IMDB2.Controllers
 {
     public class MoviesController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public MoviesController()
         {
@@ -67,7 +68,7 @@ namespace IMDB2.Controllers
                     movie.Image = image;
                     string ImageName = Path.GetFileName(Moviefile.FileName);
                     movie.Img = ImageName;
-                    string physicalPath = Server.MapPath("~/Images" + ImageName);
+                    string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
                     Moviefile.SaveAs(physicalPath);
                 }
                
@@ -112,155 +113,150 @@ namespace IMDB2.Controllers
                 movieInDb.Name = movie.Name;
                 //movieInDb.Img=movie.Img;
                 HttpPostedFileBase Moviefile = Request.Files["ImageMovie"];
-                if (Moviefile != null)
+                if (Moviefile != null||Moviefile.ContentLength==0)
                 {
                     byte[] image = Upload.UploadImageInDataBase(Moviefile);
                     movieInDb.Image = image;
-                    string ImageName = Path.GetFileName(Moviefile.FileName);
-                    movieInDb.Img = ImageName;
-                    string physicalPath = Server.MapPath("~/Images" + ImageName);
-                    Moviefile.SaveAs(physicalPath);
+                    
+                    try
+                    {
+                        string ImageName = Path.GetFileName(Moviefile.FileName);
+                        
+                        string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
+                        Moviefile.SaveAs(physicalPath);
+                        movieInDb.Img = ImageName;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+
+                    }
+                    
                 }
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
         }
-      
-
-
-
-
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-
-
-
-
-        //    public ActionResult New()
-        //    {
-        //        //var actors = _context.Actors;
-        //        var director = _context.Directors;
-        //        var viewModel = new MovieFormViewModel
-        //        {
-        //            Actors= new List<Actor>(),
-        //            Director=director.FirstOrDefault(),
-        //        };
-
-        //        return View("MoviesForm", viewModel);
-        //    }
-        //    //public ActionResult NewActor(int id)
-        //    //{
-        //    //    var movie = _context.Movies.FirstOrDefault(m => m.Id == id);
-        //    //  // var actors = _context.Actors;
-        //    //    //var director = _context.Directors;
-        //    //    var viewModel = new MovieFormViewModel
-        //    //    {
-        //    //       Movie=movie,
-        //    //       Actors=new List<Actor>(),
-        //    //       //Director=movie.Director,
-
-        //    //    };
-
-        //    //    return View("ActorForm", viewModel);
-        //    //}
-        //    //public ActionResult EditActor(int id)
-        //    //{
-        //    //    var movie = _context.Movies.FirstOrDefault(c => c.Id == id);
-
-
-        //    //    if (movie == null)
-        //    //        return HttpNotFound();
-
-        //    //    var viewModel = new MovieFormViewModel
-        //    //    {
-        //    //        Movie = movie,
-        //    //        Actors = _context.Actors.Where(x => x.Movies.FirstOrDefault(m => m.Id == id).Id == id).ToList(),
-        //    //        Director = _context.Directors.FirstOrDefault(m => m.Id == movie.DirectorId),
-
-        //    //    };
-
-        //    //    return View("ActorForm", viewModel);
-        //    //}
-        //    [Authorize(Roles = "Admin")]
-        //    public ActionResult Edit(int id)
-        //    {
-        //        var movie = _context.Movies.FirstOrDefault(c => c.Id == id);
-
-
-        //        if (movie == null)
-        //            return HttpNotFound();
-
-        //        var viewModel = new MovieFormViewModel
-        //        {
-        //            Movie = movie,
-        //            Actors = movie.Actors.ToList(),
-        //            Director = movie.Director,
-
-        //        };
-
-        //        return View("MoviesForm", movie);
-        //    }
-        //    [HttpPost]
-        ////   [ValidateAntiForgeryToken]
-        //    public ActionResult Save(Movie movie, Director director,ICollection<Actor> actors)
-        //    {
-        //        //if (!ModelState.IsValid)
-        //        //{
-        //        //    //var viewModel = new MovieFormViewModel
-        //        //    //{
-        //        //    //    Movie = movie,
-        //        //    //    Actors = movie.Actors.ToList(),
-        //        //    //    Director = movie.Director,
-        //        //    //};
-
-        //        //    return View("MovieForm", movie);
-        //        //}
-        //        if (movie.Id == 0)
-        //        {
-        //            _context.Movies.Add(movie);
-        //        }
-        //        else
-        //        {
-        //            var movieInDb = _context.Movies.First(m => m.Id == movie.Id);
-        //            //var DirectorInDb=_context.Directors.First(m => m.Id == director.Id);
-
-        //            movieInDb.Name = movie.Name;
-        //            //DirectorInDb.Name = movie.Director.Name;
-        //            //movieInDb.Director.Name= movie.Director.Name;
-
-        //            //movieInDb.Actors = movie.Actors;
-        //            for (int i = 0; i < actors.Count(); i++)
-        //            {
-        //                var value = actors.ToList()[i].Id;
-        //                var actorInDb = _context.Actors.FirstOrDefault(a => a.Id ==value );
-        //                actorInDb.FirstName = actors.ToList()[i].FirstName;
-        //                actorInDb.LastName = actors.ToList()[i].LastName;
-        //                actorInDb.Img = actors.ToList()[i].Img;
-        //                // movieInDb.Actors.ToList()[i].Image = movie.Actors.ToList()[i].Image;
-        //                actorInDb.Age = actors.ToList()[i].Age;
-        //            }
-
-        //            //movieInDb.Image = new byte[file.ContentLength];
-        //            //file.InputStream.Read(movieInDb.Image, 0, file.ContentLength);
-        //            //movieInDb.GenreId = movie.GenreId;
-        //            //movieInDb.NumberInStock = movie.NumberInStock;
-        //            //movieInDb.ReleaseDate = movie.ReleaseDate;
-        //        }
-
-        //        _context.SaveChanges();
-        //        return RedirectToAction("Index", "Movies");
-        //    }
-        public ActionResult Details(int id)
+        public ActionResult Delete(int? id)
         {
-            var movie = _context.Movies.Include(m => m.Actors).Include(m=>m.Director).SingleOrDefault(m => m.Id == id);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            var movie = _context.Movies.ToList().FirstOrDefault(m => m.Id == id);
+          
 
             if (movie == null)
+            {
                 return HttpNotFound();
+            }
+            _context.Movies.Remove(movie);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+        public ActionResult Details(int id)
+        {
+            var movie = _context.Movies.Include(m => m.Actors).Include(m=>m.Director).FirstOrDefault(m => m.Id == id);
+            
+            //var actors = _context.Actors.ToList().Where(a => a.Movies.FirstOrDefault(m => m.Id == id).Id == id);
+            var director=_context.Directors.ToList().FirstOrDefault(d=>d.Id==movie.DirectorId);
+            var comments= new LinkedList<Comment>(_context.Comments.Where(m => m.Movie.Id == id)) ;
+            MovieDetailsViewModel movieVM = new MovieDetailsViewModel
+            {
+                Movie = movie,
+                Director = director,
+                Actors = movie.Actors,
+                Comments = comments,
+            };
+            if (movie == null)
+                return HttpNotFound();
+            if(User.IsInRole("Admin"))
+                return View("DetailsToAdmin",movieVM);
+            return View("DetailsToUser",movieVM);
 
-            return View(movie);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Comment(FormCollection form)
+        {
+            
+            int movieId = int.Parse(form["Id"]);
+            var newComment = new Comment
+            {
+                Content = form["Comment"],
+                MovieId = movieId,
+                UserName = User.Identity.Name
+            };
 
+            _context.Comments.Add(newComment);
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Movies", new {id=movieId});
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Like(FormCollection form)
+        {
+            int movieId = int.Parse(form["Id"]);
+            var movie=_context.Movies.ToList().FirstOrDefault(m=>m.Id==movieId);
+            var person=_context.Persons.ToList().FirstOrDefault(p=>p.UserName.Contains(User.Identity.Name));
+            var personCheckLike = _context.PersonLikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
+            
+            if (personCheckLike == null)
+            {
+                var personLikes = new PersonLikes
+                {
+                    MovieId = movieId,
+                    PersonId = person.Id,
+                };
+                movie.Likes++;
+                _context.PersonLikes.Add(personLikes);
+                
+
+            }
+            else
+            {
+                var personLikes = _context.PersonLikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
+                movie.Likes--;
+                _context.PersonLikes.Remove(personLikes);
+               
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Movies", new { id = movieId });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Dislike(FormCollection form)
+        {
+            int movieId = int.Parse(form["Id"]);
+            var movie = _context.Movies.ToList().FirstOrDefault(m => m.Id == movieId);
+            var person = _context.Persons.ToList().FirstOrDefault(p => p.UserName.Contains(User.Identity.Name));
+            var personCheckDislike = _context.PersonDislikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
+           
+            if (personCheckDislike == null)
+            {
+                var personDislikes = new PersonDislikes
+                {
+                    MovieId = movieId,
+                    PersonId = person.Id,
+                };
+                movie.Dislikes++;
+                _context.PersonDislikes.Add(personDislikes);
+                
+
+            }
+            else
+            {
+                var personDislikes = _context.PersonDislikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
+                movie.Dislikes--;
+                _context.PersonDislikes.Remove(personDislikes);
+              
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Movies", new { id = movieId });
         }
     }
 }

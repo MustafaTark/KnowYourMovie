@@ -17,10 +17,13 @@ namespace IMDB2.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext _context ;
 
         public AccountController()
         {
+            _context = new ApplicationDbContext();
         }
+
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
@@ -149,10 +152,32 @@ namespace IMDB2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            
+            var person = new Person
+            {
+                UserName = model.Email,
+
+
+            };
+            HttpPostedFileBase UserImage = Request.Files["ProfileImage"];
+            if (UserImage != null)
+            {
+
+
+                string ImageName = System.IO.Path.GetFileName(UserImage.FileName);
+                person.Img = ImageName;
+                string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
+                UserImage.SaveAs(physicalPath);
+            }
+            _context.Persons.Add(person);
+             _context.SaveChanges();
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
+               
+                
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -167,6 +192,7 @@ namespace IMDB2.Controllers
                 }
                 AddErrors(result);
             }
+            
 
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -405,6 +431,7 @@ namespace IMDB2.Controllers
 
         protected override void Dispose(bool disposing)
         {
+            _context.Dispose();
             if (disposing)
             {
                 if (_userManager != null)

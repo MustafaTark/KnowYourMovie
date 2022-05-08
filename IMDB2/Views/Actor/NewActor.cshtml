@@ -7,7 +7,7 @@
 <h2>AddActors</h2>
 
 
-@using (Html.BeginForm("AddActors", "Movies", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("NewActor", "Actor", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -68,7 +68,7 @@
                 <input type="submit" value="Add" class="btn btn-success" />
             </div>
         </div>
-        @Html.ActionLink("Finish", "Index")
+        @Html.ActionLink("Finish", "Index","Movies")
     </div>
 }
 

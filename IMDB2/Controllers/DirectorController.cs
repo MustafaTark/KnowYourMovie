@@ -1,4 +1,5 @@
 ﻿using IMDB2.Models;
+using IMDB2.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace IMDB2.Controllers
 {
     public class DirectorController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public DirectorController()
         {
@@ -20,6 +21,17 @@ namespace IMDB2.Controllers
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
+        }
+        public ActionResult Details(int id)
+        {
+            var director = _context.Directors.FirstOrDefault(d => d.Id == id);
+            var movies = _context.Movies.Where(m => m.DirectorId== id).ToList();
+            var directorVM = new DirectorDetailsViewModel
+            {
+                Director = director,
+                Movies = movies,
+            };
+            return View(directorVM);
         }
         [Authorize(Roles = "Admin")]
         public ActionResult NewDirector()
@@ -31,12 +43,16 @@ namespace IMDB2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult NewDirector(Director director)
         {
+           
             if (ModelState.IsValid)
             {
 
                 var movie = _context.Movies.ToList().Last();
-                movie.DirectorId = director.Id;
+               
                 _context.Directors.ToList().Add(director);
+                movie.Director=director;
+
+                _context.SaveChanges();
                 return RedirectToAction("AddActors","Actor");
             }
             return View(director);
@@ -65,6 +81,7 @@ namespace IMDB2.Controllers
 
 
                 movie.DirectorId = director.Id;
+                _context.SaveChanges();
                 return RedirectToAction("AddActors", "Actor");
             }
             return RedirectToAction(nameof(AddDirector));
@@ -100,6 +117,23 @@ namespace IMDB2.Controllers
                 return RedirectToAction("Index");
             }
             return View(director);
+        }
+        public ActionResult Delete(int? id, int movieId)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var director = _context.Directors.ToList().FirstOrDefault(d => d.Id == id);
+
+            var movie = _context.Movies.ToList().FirstOrDefault(m => m.Id == movieId);
+            if (director == null)
+            {
+                return HttpNotFound();
+            }
+            movie.DirectorId=0;
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Movies", new { id = movieId });
         }
     }
 }

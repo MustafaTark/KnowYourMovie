@@ -1,0 +1,44 @@
+﻿@model IMDB2.ViewModel.ActorDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="height:10px"></div>
+<div>
+    <div>
+        <img src="@Url.Content("~/images/" + Model.Actor.Img)" alt="Sample Image" style="padding-left:0px; float:left;width:200px;height:250px;" />
+    </div>
+
+    <div>
+        <h1 style="padding-left:250px">@Model.Actor.FirstName @Model.Actor.LastName </h1>
+    </div>
+  
+
+</div>
+
+<div style="height:10px"></div>
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Movies </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model.Movies)
+            {
+                <tr>
+                    <th scope="row"><a href="@Url.Content("/Movies/Details/" + movie.Id )">@movie.Name</a></th>
+                  
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+

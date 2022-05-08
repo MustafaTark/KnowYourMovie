@@ -29,7 +29,8 @@ namespace IMDB2.Models
         public DbSet<Director> Directors { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Cast> Casts { get; set; }
-        public DbSet<UpdateMovieViewModel> MovieFormView { get; set; }
+        public DbSet<PersonLikes> PersonLikes { get; set; }
+        public DbSet<PersonDislikes> PersonDislikes { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -66,41 +67,24 @@ namespace IMDB2.Models
                     cs.MapRightKey("MovieRefId");
                     cs.ToTable("PersonMovie");
                 });
-            //        modelBuilder.Entity<Movie>()
-            //.HasRequired(c => c.Actor)
-            //.WithMany()
-            //.WillCascadeOnDelete(false);
-
-
-            //       modelBuilder.Entity<Movie>()
-            //.HasRequired(a => a.Actor)
-            //.WithMany()
-            //.HasForeignKey(a => a.ActorId);
-            //       modelBuilder.Entity<Movie>()
-            //.HasRequired(a => a.Director)
-            //.WithMany()
-            //.HasForeignKey(a => a.DirectorId);
-
-            //       modelBuilder.Entity<Actor>()
-            //           .HasOptional(b => b.Movie)
-            //           .WithMany()
-            //           .HasForeignKey(b => b.MovieId);
-            //       modelBuilder.Entity<Cast>()
-            //.HasRequired(a => a.Movie)
-            //.WithMany()
-            //.HasForeignKey(a => a.MovieId);
-            //       modelBuilder.Entity<Cast>()
-            //.HasRequired(a => a.Actor)
-            //.WithMany()
-            //.HasForeignKey(a => a.ActorId);
-            //       modelBuilder.Entity<Cast>()
-            //.HasRequired(a => a.Director)
-            //.WithMany()
-            //.HasForeignKey(a => a.DirectorId);
-            //       modelBuilder.Entity<Director>()
-            //.HasRequired(a => a.Movie)
-            //.WithMany()
-            //.HasForeignKey(a => a.MovieId);
+            modelBuilder.Entity<Person>()
+                .HasMany(s => s.Actors)
+                .WithMany(c => c.Users)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("PersonRefId");
+                    cs.MapRightKey("ActorRefId");
+                    cs.ToTable("PersonActor");
+                });
+            modelBuilder.Entity<Person>()
+                .HasMany(s => s.Directors)
+                .WithMany(c => c.Users)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("PersonRefId");
+                    cs.MapRightKey("DirectorRefId");
+                    cs.ToTable("PersonDirector");
+                });
 
             return new ApplicationDbContext();
         }
