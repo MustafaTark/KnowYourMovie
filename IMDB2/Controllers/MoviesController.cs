@@ -177,6 +177,7 @@ namespace IMDB2.Controllers
             return View("DetailsToUser",movieVM);
 
         }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Comment(FormCollection form)
@@ -202,7 +203,7 @@ namespace IMDB2.Controllers
             var movie=_context.Movies.ToList().FirstOrDefault(m=>m.Id==movieId);
             var person=_context.Persons.ToList().FirstOrDefault(p=>p.UserName.Contains(User.Identity.Name));
             var personCheckLike = _context.PersonLikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
-            
+            var personCheckDislike = _context.PersonDislikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
             if (personCheckLike == null)
             {
                 var personLikes = new PersonLikes
@@ -212,7 +213,14 @@ namespace IMDB2.Controllers
                 };
                 movie.Likes++;
                 _context.PersonLikes.Add(personLikes);
-                
+
+
+                if (personCheckDislike != null)
+                {
+                    _context.PersonDislikes.Remove(personCheckDislike);
+                    movie.Dislikes--;
+                }
+
 
             }
             else
@@ -220,7 +228,8 @@ namespace IMDB2.Controllers
                 var personLikes = _context.PersonLikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
                 movie.Likes--;
                 _context.PersonLikes.Remove(personLikes);
-               
+                
+
             }
 
             _context.SaveChanges();
@@ -234,7 +243,7 @@ namespace IMDB2.Controllers
             var movie = _context.Movies.ToList().FirstOrDefault(m => m.Id == movieId);
             var person = _context.Persons.ToList().FirstOrDefault(p => p.UserName.Contains(User.Identity.Name));
             var personCheckDislike = _context.PersonDislikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
-           
+            var personCheckLike = _context.PersonLikes.FirstOrDefault(p => p.PersonId == person.Id && p.MovieId == movieId);
             if (personCheckDislike == null)
             {
                 var personDislikes = new PersonDislikes
@@ -244,7 +253,11 @@ namespace IMDB2.Controllers
                 };
                 movie.Dislikes++;
                 _context.PersonDislikes.Add(personDislikes);
-                
+                if (personCheckLike != null)
+                {
+                    _context.PersonLikes.Remove(personCheckLike);
+                    movie.Likes--;
+                }
 
             }
             else

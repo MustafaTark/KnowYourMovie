@@ -1,8 +1,91 @@
-﻿@{
+﻿@model IMDB2.ViewModel.HomeViewModel
+@using Microsoft.AspNet.Identity
+@{
     ViewBag.Title = "Home Page";
 }
+<div style="height:50px"></div>
+<div class="row">
 
-<div class="jumbotron">
+    @for (int i = 0; i < 3; i++)
+    {
+        <div class="card border-secondary mb-3" style="max-width: 14rem;">
+            <a class="list-group-item list-group-item-action" href="@Url.Content("/Movies/Details/" + Model.Movies[i].Id )">
+                <h4>@Model.Movies[i].Name</h4>
+
+                <img src="@Url.Content("~/images/" + Model.Movies[i].Img)" alt="Sample Image" class="d-block user-select-none" width="150" height="200" aria-label="Placeholder: Image cap" focusable="false" />
+
+            </a>
+
+        </div>
+        <div style="max-width: 15rem;"></div>
+
+    }
+
+</div>
+<div style="height:10px"></div>
+
+<a href="@Url.Content("~/Movies/Index")" class="btn btn-warning" style="width:600px;margin-left:300px">
+    <div>
+        <h5 class="mb-1">Show More</h5>
+    </div>
+</a>
+<div style="height:30px"></div>
+<h3>More Actors You Find Them Here</h3>
+<div style="height:30px"></div>
+<div class="row">
+    @for (int i = 2; i < 5; i++)
+    {
+        <div class="card border-secondary mb-3" style="max-width: 14rem;">
+            <a class="list-group-item list-group-item-action" href="@Url.Content("/Actor/Details/" + Model.Actors[i].Id )">
+                <h4>@Model.Actors[i].FirstName @Model.Actors[i].LastName</h4>
+
+                <img src="@Url.Content("~/images/" + Model.Actors[i].Img)" alt="Sample Image" class="d-block user-select-none" width="150" height="200" aria-label="Placeholder: Image cap" focusable="false" />
+
+            </a>
+
+        </div>
+        <div style="max-width: 15rem;"></div>
+
+    }
+</div>
+@if (Request.IsAuthenticated)
+{
+    if (Model.Person.Movies.Any())
+    {
+        <div style="height:30px"></div>
+        <h3>Favorite Movies</h3>
+        <div style="height:30px"></div>
+        <div class="row">
+            @foreach (var movie in Model.Person.Movies)
+            {
+                <div class="card border-secondary mb-3" style="max-width: 14rem;">
+                    <a class="list-group-item list-group-item-action" href="@Url.Content("/Movies/Details/" + movie.Id )">
+                        <h4>@movie.Name</h4>
+
+                        <img src="@Url.Content("~/images/" + movie.Img)" alt="Sample Image" class="d-block user-select-none" width="150" height="200" aria-label="Placeholder: Image cap" focusable="false" />
+
+                    </a>
+
+                </div>
+                <div style="max-width: 15rem;"></div>
+            }
+        </div>
+        <div style="height:10px"></div>
+
+        <a href="@Url.Content("~/Profile/Index")" class="btn btn-warning" style="width:600px;margin-left:300px">
+            <div>
+                <h5 class="mb-1">Edit Account</h5>
+            </div>
+        </a>
+    }
+
+}
+else
+{
+    <a class="btn btn-warning" href="@Url.Content("/Account/Register")" style="margin-left:300px">Sign In</a>
+}
+
+@*<div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
@@ -28,4 +111,4 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
-</div>
+</div>*@

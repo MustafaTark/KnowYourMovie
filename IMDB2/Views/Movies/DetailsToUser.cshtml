@@ -68,7 +68,7 @@
             <tr>
                 <th scope="row"> Director By</th>
                 <td><a href="@Url.Content("/Director/Details/" + Model.Director.Id )">@Model.Director.FirstName @Model.Director.LastName</a></td>
-                <td><a href="@Url.Content("/Director/UpdateDirector/" + Model.Director.Id )"> Edit</a></td>
+               
 
             </tr>
 
@@ -82,7 +82,7 @@
         <thead>
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Actions</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@
             {
                 <tr>
                     <th scope="row"><a href="@Url.Content("/Actor/Details/" + actor.Id )">@actor.FirstName  @actor.LastName</a></th>
-                    <td><a href="@Url.Content("/Actor/UpdateActor/" + actor.Id )"> Edit</a></td>
+                    
 
                 </tr>
             }
