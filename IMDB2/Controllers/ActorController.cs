@@ -58,9 +58,7 @@ namespace IMDB2.Controllers
             {
                 var movie = _context.Movies.ToList().Last();
                 string selectedActorIds = form["SelectedActorId"];
-                //string[] selectedActorIdsArray = selectedActorIds.Split(',');
-                //foreach (string id in selectedActorIdsArray)
-                //{
+                
                 var actor = _context.Actors.ToList().FirstOrDefault(a => a.Id.ToString().Contains(selectedActorIds));
                 movie.Actors.Add(actor);
 
@@ -157,10 +155,20 @@ namespace IMDB2.Controllers
                 {
                     byte[] image = Upload.UploadImageInDataBase(file);
                     actorInDb.Image = image;
-                    string ImageName = Path.GetFileName(file.FileName);
-                    actorInDb.Img = ImageName;
-                    string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
-                    file.SaveAs(physicalPath);
+                    try
+                    {
+                        string ImageName = Path.GetFileName(file.FileName);
+
+                        string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
+                        file.SaveAs(physicalPath);
+                        actorInDb.Img = ImageName;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+
+                    }
                 }
                 _context.SaveChanges();
                 return RedirectToAction("Details");

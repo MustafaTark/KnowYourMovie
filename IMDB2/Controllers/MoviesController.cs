@@ -5,10 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-//using IMDB2.ViewModel;
-//using System.Web.Script.Serialization;
-//using System.Web.Script.Services;
-//using System.Web.Services;
 using System.Net;
 using System.IO;
 using IMDB2.Data;
@@ -93,12 +89,7 @@ namespace IMDB2.Controllers
             {
                 return HttpNotFound();
             }
-            var updateMovie = new UpdateMovieViewModel
-            {
-                Movie = movie,
-                Actor = movie.Actors.FirstOrDefault(),
-                Director = director,
-            };
+           
             return View(movie);
         }
 
@@ -111,7 +102,7 @@ namespace IMDB2.Controllers
             {
                 Movie movieInDb = _context.Movies.ToList().First(m => m.Id == movie.Id);
                 movieInDb.Name = movie.Name;
-                //movieInDb.Img=movie.Img;
+   
                 HttpPostedFileBase Moviefile = Request.Files["ImageMovie"];
                 if (Moviefile != null||Moviefile.ContentLength==0)
                 {

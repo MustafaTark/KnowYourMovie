@@ -17,7 +17,7 @@ namespace IMDB2.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationDbContext _context ;
+        private readonly ApplicationDbContext _context ;
 
         public AccountController()
         {

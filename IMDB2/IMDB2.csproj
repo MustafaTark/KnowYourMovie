@@ -234,17 +234,61 @@
     <Compile Include="Migrations\202204290946454_EditDirector.designer.cs">
       <DependentUpon>202204290946454_EditDirector.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205040114509_addUpdate.cs" />
+    <Compile Include="Migrations\202205040114509_addUpdate.designer.cs">
+      <DependentUpon>202205040114509_addUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205040116444_RestoreNow.cs" />
+    <Compile Include="Migrations\202205040116444_RestoreNow.designer.cs">
+      <DependentUpon>202205040116444_RestoreNow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205040703570_updatePerson.cs" />
+    <Compile Include="Migrations\202205040703570_updatePerson.designer.cs">
+      <DependentUpon>202205040703570_updatePerson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205040705111_FinishUpdatePerson.cs" />
+    <Compile Include="Migrations\202205040705111_FinishUpdatePerson.designer.cs">
+      <DependentUpon>202205040705111_FinishUpdatePerson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205040720242_SolveConflict.cs" />
+    <Compile Include="Migrations\202205040720242_SolveConflict.designer.cs">
+      <DependentUpon>202205040720242_SolveConflict.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205040725543_FinishComment.cs" />
+    <Compile Include="Migrations\202205040725543_FinishComment.designer.cs">
+      <DependentUpon>202205040725543_FinishComment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205050837178_AddLikes.cs" />
+    <Compile Include="Migrations\202205050837178_AddLikes.designer.cs">
+      <DependentUpon>202205050837178_AddLikes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205050849125_AddLikesToperson.cs" />
+    <Compile Include="Migrations\202205050849125_AddLikesToperson.designer.cs">
+      <DependentUpon>202205050849125_AddLikesToperson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205052125497_AddLikesTable.cs" />
+    <Compile Include="Migrations\202205052125497_AddLikesTable.designer.cs">
+      <DependentUpon>202205052125497_AddLikesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205070508100_FinishFavorites.cs" />
+    <Compile Include="Migrations\202205070508100_FinishFavorites.designer.cs">
+      <DependentUpon>202205070508100_FinishFavorites.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205140812181_DeleteNotImportant.cs" />
+    <Compile Include="Migrations\202205140812181_DeleteNotImportant.designer.cs">
+      <DependentUpon>202205140812181_DeleteNotImportant.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Actor.cs" />
-    <Compile Include="Models\Cast.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Director.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Movie.cs" />
-    <Compile Include="Models\MovieViewModel.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\PersonDislikes.cs" />
+    <Compile Include="Models\PersonLikes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -252,8 +296,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModel\CreateMovieViewModel.cs" />
-    <Compile Include="ViewModel\MovieFormViewModel.cs" />
+    <Compile Include="ViewModel\ActorDetailsViewModel.cs" />
+    <Compile Include="ViewModel\DirectorDetailsViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModel.cs" />
+    <Compile Include="ViewModel\MovieDetailsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -316,16 +362,11 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Movies\IndexUser.cshtml" />
-    <Content Include="Views\Movies\Details.cshtml" />
-    <Content Include="Views\Movies\ActorForm.cshtml" />
-    <Content Include="Views\Movies\_ActorPartial.cshtml" />
+    <Content Include="Views\Movies\DetailsToAdmin.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Roles\ManageUserRole.cshtml" />
     <Content Include="Views\Movies\IndexToAdmin.cshtml" />
-    <Content Include="Views\Movies\EditorTemplates\Actor.cshtml" />
-    <Content Include="Views\Movies\EditorTemplates\Movie.cshtml" />
-    <Content Include="Views\Movies\EditorTemplates\Director.cshtml" />
     <Content Include="Views\Movies\Edit.cshtml" />
     <Content Include="Views\Actor\UpdateActor.cshtml" />
     <Content Include="Views\Movies\Create.cshtml" />
@@ -334,11 +375,18 @@
     <Content Include="Views\Director\UpdateDirector.cshtml" />
     <Content Include="Views\Actor\NewActor.cshtml" />
     <Content Include="Views\Director\NewDirector.cshtml" />
+    <Content Include="Views\Movies\DetailsToUser.cshtml" />
+    <Content Include="Views\Actor\Details.cshtml" />
+    <Content Include="Views\Director\Details.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\Edit.cshtml" />
+    <Content Include="Views\Profile\AddFavoriteMovies.cshtml" />
+    <Content Include="Views\Profile\AddFavoriteActors.cshtml" />
+    <Content Include="Views\Profile\AddFavoriteDirectors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
-    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -368,6 +416,39 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202204290946454_EditDirector.resx">
       <DependentUpon>202204290946454_EditDirector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205040114509_addUpdate.resx">
+      <DependentUpon>202205040114509_addUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205040116444_RestoreNow.resx">
+      <DependentUpon>202205040116444_RestoreNow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205040703570_updatePerson.resx">
+      <DependentUpon>202205040703570_updatePerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205040705111_FinishUpdatePerson.resx">
+      <DependentUpon>202205040705111_FinishUpdatePerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205040720242_SolveConflict.resx">
+      <DependentUpon>202205040720242_SolveConflict.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205040725543_FinishComment.resx">
+      <DependentUpon>202205040725543_FinishComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205050837178_AddLikes.resx">
+      <DependentUpon>202205050837178_AddLikes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205050849125_AddLikesToperson.resx">
+      <DependentUpon>202205050849125_AddLikesToperson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205052125497_AddLikesTable.resx">
+      <DependentUpon>202205052125497_AddLikesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205070508100_FinishFavorites.resx">
+      <DependentUpon>202205070508100_FinishFavorites.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205140812181_DeleteNotImportant.resx">
+      <DependentUpon>202205140812181_DeleteNotImportant.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

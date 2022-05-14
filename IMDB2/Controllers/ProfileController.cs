@@ -1,6 +1,7 @@
 ﻿using IMDB2.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -59,11 +60,21 @@ namespace IMDB2.Controllers
                 if (UserImage != null)
                 {
 
+                    try
+                    {
+                        string ImageName = Path.GetFileName(UserImage.FileName);
 
-                    string ImageName = System.IO.Path.GetFileName(UserImage.FileName);
-                    personInDb.Img = ImageName;
-                    string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
-                    UserImage.SaveAs(physicalPath);
+                        string physicalPath = Server.MapPath(Url.Content("~/Images/") + ImageName);
+                        UserImage.SaveAs(physicalPath);
+                        personInDb.Img = ImageName;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+
+                    }
+                    
                 }
                 _context.SaveChanges();
                 return View(person);
