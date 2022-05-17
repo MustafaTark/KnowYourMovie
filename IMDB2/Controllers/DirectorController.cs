@@ -92,8 +92,7 @@ namespace IMDB2.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ;
+            };
             Director director = _context.Directors.ToList().FirstOrDefault(m => m.Id == id);
 
             if (director == null)
@@ -114,10 +113,11 @@ namespace IMDB2.Controllers
 
                 directorInDb.LastName = director.LastName;
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Director", new {id=director.Id});
             }
             return View(director);
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id, int movieId)
         {
             if (id == null)

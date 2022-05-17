@@ -132,10 +132,10 @@ namespace IMDB2.Controllers
         }
         public ActionResult Delete(int? id)
         {
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var movie = _context.Movies.ToList().FirstOrDefault(m => m.Id == id);
           
 

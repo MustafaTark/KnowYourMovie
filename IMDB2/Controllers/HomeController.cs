@@ -69,7 +69,7 @@ namespace IMDB2.Controllers
             {
                 return RedirectToAction("Details", "Actor", new { id = actor.Id });
             }
-            return View("NOT FOUND");
+            return View("NotFound");
         }
     }
 }

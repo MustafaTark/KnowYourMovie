@@ -137,9 +137,7 @@ namespace IMDB2.Controllers
             return View(actor);
         }
 
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateActor(Actor actor)
@@ -150,6 +148,7 @@ namespace IMDB2.Controllers
                 actorInDb.FirstName = actor.FirstName;
                 actorInDb.LastName = actor.LastName;
                 actorInDb.Age = actor.Age;
+            
                 HttpPostedFileBase file = Request.Files["ImageActor"];
                 if (file != null)
                 {
@@ -171,7 +170,7 @@ namespace IMDB2.Controllers
                     }
                 }
                 _context.SaveChanges();
-                return RedirectToAction("Details");
+                return RedirectToAction("Details", "Actor", new {id=actor.Id});
             }
             return View(actor);
         }

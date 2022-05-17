@@ -46,7 +46,7 @@
                 <tr>
 
 
-                    <th><a href="#">@movie.Name</a></th>
+                    <th><a href="@Url.Content("/Movies/Details/"+movie.Id)">@movie.Name</a></th>
                     <td>@Html.ActionLink("Delete", "DeleteMovie", "Profile", new { id = movie.Id },null)</td>
                     
 

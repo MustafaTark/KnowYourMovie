@@ -44,8 +44,8 @@
                 @foreach (var actor in Model.Actors)
                 {
                     <tr>
-                        <th><a href="#">@actor.FirstName @actor.LastName</a></th>
-                        <td>@Html.ActionLink("Delete", "DeleteActor", "Profile", new { id = actor.Id })</td>
+                        <th><a href="@Url.Content("/Actor/Details/"+actor.Id)">@actor.FirstName @actor.LastName</a></th>
+                        <td>@Html.ActionLink("Delete", "DeleteActor", "Profile", new { id = actor.Id },null)</td>
                     </tr>
                 }
 
