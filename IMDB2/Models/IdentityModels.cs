@@ -48,15 +48,7 @@ namespace IMDB2.Models
                     cs.MapRightKey("ActorRefId");
                     cs.ToTable("ActorMovie");
                 });
-            //modelBuilder.Entity<UpdateMovieViewModel>()
-            //    .HasMany<Actor>(s => s.Actors)
-            //    .WithMany(c => (ICollection<UpdateMovieViewModel>)c.Movies)
-            //    .Map(cs =>
-            //    {
-            //        cs.MapLeftKey("MovieFormRefId");
-            //        cs.MapRightKey("ActorFormRefId");
-            //        cs.ToTable("ActorMovieForm");
-            //    });
+            
 
             modelBuilder.Entity<Person>()
                 .HasMany(s => s.Movies)

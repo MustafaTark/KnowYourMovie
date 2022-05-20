@@ -91,9 +91,6 @@ namespace IMDB2.Controllers
             {
 
                 var movie = _context.Movies.ToList().Last();
-
-
-
                 HttpPostedFileBase file = Request.Files["ImageActor"];
                 if (file != null)
                 {
